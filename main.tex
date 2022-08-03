@@ -1,0 +1,167 @@
+\documentclass[a4paper]{bxjsarticle}  
+\usepackage{zxjatype}
+\usepackage[ipa]{zxjafont}
+
+%% Use packages---------------------------------------------
+\usepackage{hyperref}%\Hと喧嘩する
+\usepackage{stmaryrd}%mapsfromとか
+
+\usepackage{tcolorbox}%色付き枠
+\usepackage{varwidth}%分かんないけどりちょますブログにあったやつ
+\tcbuselibrary{breakable, skins, theorems}%あったやつ2
+
+\usepackage{amsmath,amssymb}%数式全般
+\usepackage{amsthm}%定理環境
+\usepackage{mathrsfs}%花文字 (\mathscr)
+\usepackage{bm}%ベクトルなどの太字 (\bm)
+\usepackage{mathtools}%\coloneqq など
+\usepackage{colonequals}%\colonequals
+\usepackage{graphicx}%図の挿入
+%\usepackage{subcaption}%関連する図を並べる
+\usepackage{tikz}%図を描く
+\usetikzlibrary{patterns}%網掛け等
+\usepackage{tikz-cd}%可換図式を描く
+\usepackage{cancel}%数式に斜線を引く
+\usepackage{centernot}%\centernot
+\usepackage{xparse}%凝ったマクロを作る (\NewDocumentCommand)
+\usepackage{array,booktabs,float}%表組みなど
+\usepackage{textcomp,gensymb}%\degree など
+\usepackage{bbm}%\mathbbm で小文字や数字も太くなるようにする
+\usepackage{listings}
+\usepackage{url}
+\usepackage[shortlabels]{enumitem}%番号付けを自動でさせる
+\usepackage{color}%色を変える
+
+%\divides, \notdivides を使えるようにする
+\DeclareFontFamily{U}{matha}{\hyphenchar\font45}
+\DeclareFontShape{U}{matha}{m}{n}{
+<5> <6> <7> <8> <9> <10> gen * matha
+<10.95> matha10 <12> <14.4> <17.28> <20.74> <24.88> matha12
+}{}
+\DeclareSymbolFont{matha}{U}{matha}{m}{n}
+\DeclareMathSymbol{\divides}{3}{matha}{"17}
+\DeclareMathSymbol{\notdivides}{3}{matha}{"1F}
+
+
+
+\definecolor{frameinnercolor}{RGB}{49,44,44}
+
+\newcounter{theorem}
+\numberwithin{theorem}{subsection}% numberwithinはamsmath.styで定義されている
+\newenvironment{theorem}[2][]{%
+%#1 = タイトル,　#2 = 定理環境名
+\refstepcounter{theorem}%
+
+\newtcolorbox{theobox}[1][]{%
+enhanced,
+coltitle=black,colback = white,colframe = green!35!black,fonttitle=\bfseries,
+sharp corners=all,
+breakable=true,
+top=4mm,
+before skip=2mm,
+attach boxed title to top left={yshift=-3mm,xshift=5mm},
+boxed title style={colback=white,boxrule=1pt},
+title=##1,
+}
+
+\ifstrempty{#1}{% ifstremptyはetoolbox.styで定義．etoolbox.styはtcolorboxが読み込むので宣言不要
+\begin{theobox}[#2~\thetheorem.]}
+{\begin{theobox}[#2~\thetheorem:~{#1}]}
+}{\end{theobox}}
+
+
+\newenvironment{thm}[1][]
+{\begin{theorem}[#1]{定理}
+}{\end{theorem}}
+\newenvironment{prop}[1][]
+{\begin{theorem}[#1]{命題}
+}{\end{theorem}}
+\newenvironment{defi}[1][]
+{\begin{theorem}[#1]{定義}
+}{\end{theorem}}
+\newenvironment{rem}[1][]
+{\begin{theorem}[#1]{注意}
+}{\end{theorem}}
+\newenvironment{eg}[1][]
+{\begin{theorem}[#1]{例}
+}{\end{theorem}}
+\newenvironment{lem}[1][]
+{\begin{theorem}[#1]{補題}
+}{\end{theorem}}
+\newenvironment{cor}[1][]
+{\begin{theorem}[#1]{系}
+}{\end{theorem}}
+\newenvironment{rev}[1][]
+{\begin{theorem}[#1]{復習}
+}{\end{theorem}}
+\newenvironment{conj}[1][]
+{\begin{theorem}[#1]{予想}
+}{\end{theorem}}
+\newenvironment{fact}[1][]
+{\begin{theorem}[#1]{事実}
+}{\end{theorem}}
+
+\numberwithin{equation}{section}
+
+%黒板文字
+\newcommand{\N}{\mathbb{N}}%自然数
+\newcommand{\Z}{\mathbb{Z}}%整数
+\newcommand{\Q}{\mathbb{Q}}%有理数
+\newcommand{\R}{\mathbb{R}}%実数
+\newcommand{\C}{\mathbb{C}}%複素数
+\newcommand{\T}{\mathbb{T}}%トーラス
+
+%カリグラフィー
+\newcommand{\F}{\mathcal{F}}%フィルターか完全加法族
+\newcommand{\g}{\mathfrak{g}}
+\newcommand{\h}{\mathfrak{h}}
+\renewcommand{\a}{\mathfrak{a}}
+\newcommand{\X}{\mathfrak{X}}%ベクトル場
+\newcommand{\A}{\mathcal{A}}
+\renewcommand{\O}{\mathcal{O}}
+
+%引数持ち
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}%絶対値
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}%ノルム
+\newcommand{\diff}[2]{\frac{d#1}{d#2}}%微分
+\newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}%偏微分
+\newcommand{\set}[2]{\{\, #1\mid #2\,\}}%集合
+\newcommand{\nikou}[2]{\prescript{#1}{}{\mathrm{C}}_{#2}}%二項係数
+\newcommand{\inpro}[1]{\left\langle #1 \right\rangle}%内積
+\newcommand{\tensor}[2]{#1\otimes\overline{#2}}
+
+%引数無し
+\newcommand{\im}{\mathrm{Im}}
+\renewcommand{\ker}{\mathrm{Ker}}
+\renewcommand{\hom}{\mathrm{Hom}}
+\newcommand{\act}{\curvearrowright}
+\newcommand{\siji}{\mathbbm{1}}
+\newcommand{\clspan}{\overline{\mathrm{Span}}}
+\newcommand{\spn}{\mathrm{Span}}
+\newcommand{\mapin}{\rotatebox{90}{$\in$}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\tr}{\mathrm{Tr}}
+
+%全単射示すやつ
+\newcommand{\mapstodown}{\raise.63286ex\hbox{$\mathcal{7}-$}\mspace{-16mu}\lower.62916ex\hbox{$\leftarrow$}\mspace{-13mu}\supset}
+\newcommand{\mapsfromdown}{\reflectbox{\mapstodown}}
+\newcommand{\mapstoup}{\rotatebox[origin=c]{180}{$\mapsfromdown$}}
+\newcommand{\mapsfromup}{\rotatebox[origin=c]{180}{$\mapstodown$}}
+%%------------------------------------------------------
+\title{Lie群論のノート}
+\author{@buta\_kimchi\_\thanks{\url{https://twitter.com/buta_kimchi_}}}
+\date{\today}
+\begin{document}
+\maketitle
+\begin{abstract}
+    Warnerの ``Foundations of Differentiable Manifolds and Lie Groups'' と Fulton-Harrisの私的ノート。
+\end{abstract}
+\tableofcontents
+
+\newpage
+\input{section1}
+\newpage
+\input{section2}
+
+
+\end{document}

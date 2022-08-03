@@ -1,0 +1,504 @@
+\section{Lie群}
+
+
+\subsection{Lie群とLie環の対応}
+\begin{defi}[Lie群]
+    多様体$G$が群構造を持っていて演算が全て$C^\infty$級のときLie群と呼ぶ。$C^\infty$な群準同型を単にLie群の準同型と呼ぶ。\\
+	部分多様体$H\hookrightarrow G$がLie群の準同型であるとき部分Lie群と呼ぶ\footnotemark。つまり、部分群でも部分多様体でもありそれ自身Lie群になるもの。
+\end{defi}
+\footnotetext{後に示すこととして、この定義と「部分多様体化可能な部分群」は同等。}
+\begin{eg}
+    \begin{itemize}
+        \item 可換な例。$G=\R^n\times\T^m$。はめ込まれた部分多様体の典型例として、$\T^2$内での「ぐるぐるするやつ」があるが、これは部分Lie群である。しかし閉ではない。
+        \item $GL(n,\R)$とか。線形群。
+        \item アフィン変換群、または$\R_{>0}$と$\R$の半直積。つまり、多様体としては$G=\R_{>0}\times\R$だが
+        \[(s,t)(s',t'):=(ss',st'+t)\]
+        で群構造を入れたもの。一番簡単な非可換Lie群でありnon unimodular。
+    \end{itemize}
+\end{eg}
+
+\begin{defi}[Lie環]
+    $\g$が有限次元$\R$-線形空間で次を満たす双線形写像$[,]:\g\times\g\to\g$を備えているとき、Lie環と呼ぶ。
+    \[[X,Y]=-[Y,X],\ [X,[Y,Z]]+[Y,[Z,X]]+[Z,[X,Y]]=0\]
+    線形であって括弧を保つものをLie環の準同型と呼ぶ。\\
+    括弧で閉じた部分線形空間を部分Lie環と呼ぶ。
+\end{defi}
+\begin{eg}
+    \begin{itemize}
+        \item 可換な例。$\g:=V$に$[X,Y]:=0$で括弧を入れたもの。
+        \item $\g:=M(n,\R)$に$[X,Y]:=XY-YX$で括弧を入れたもの。一般に結合的多元環は同じ構成でLie環と見做せる。
+        \item $\g:=\spn\{X,Y\}$に$[X,Y]:=Y$で括弧を入れたもの。
+    \end{itemize}
+\end{eg}
+
+
+\begin{defi}[平行移動]
+    左移動を$L_y:G\ni x\mapsto yx\in G$と定める。また、$\g$をその左不変ベクトル場全体と定める：
+    \[\g:=\set{X\in\X(G)}{\forall y\in G\ (L_y)_*X=X}\]
+\end{defi}
+\begin{prop}
+    \[\g\ni X\longmapsto X_e\in G_e\]
+    は線形同型である。また、$\X(G)$の括弧積について$\g$は閉じていて、故に$\g$はLie環となる。
+\end{prop}
+\begin{proof}
+    $X_x=dL_x(X_e)$より単射性は明らか。逆に、$v\in G_e$について$X_x:=dL_x(v)$と構成すれば$X_e=v$だが、$X$の$C^\infty$級性がやや非自明である。$f\in C^\infty(G)$に対し$Xf\in C^\infty(G)$を示せば十分だが、
+    \[(Xf)_x=v(f\circ L_x)=\sum_i a_i\pdiff{}{y_i}f(xy),\ v=\sum_i a_i\pdiff{}{y_i}\]
+    だから、$f(xy)$という$G\times G$上の関数の$C^\infty$級性から降ってくる。\\
+    $X\in\g$は$X$が自分自身と$L{{}^\forall y}$-relatedであることと同値、故に$\g$は補題\ref{lem:121}から括弧積で閉じている。$\X(G)$の括弧積は反対称性やJocobi律を満たす（$\mathrm{End}(C^\infty(G))$は結合的だから！）ので$\g$はLie環になる。
+\end{proof}
+\begin{defi}[Lie群に対応するLie環]
+    左不変ベクトル場$\g$、または単位元の接空間$G_e$を付随するLie環と呼ぶ。
+\end{defi}
+
+\begin{eg}
+    \begin{itemize}
+        \item $G=\R^n\times\T^m$に対し$\g=\R^{n+m}$は可換なLie環。
+        \item $G=\mathrm{GL}(n,\R)$に対し$\g=\mathrm{M}(n,\R)$となる。
+        \item $G=\R_{>0}\ltimes\R$に対し$\g=\spn\{X,Y\},\ [X,Y]:=Y$となる。
+    \end{itemize}
+\end{eg}
+関手性と忠実性を説明するために少し準備をする。
+\begin{thm}[関手性]
+    準同型$\phi:G\to H$に対し、$\phi_*:\g\cong G_e\overset{d\phi}{\longrightarrow}H_e\cong\h$はLie環の準同型。
+\end{thm}
+\begin{proof}
+    つまり$\phi_*X$とは、$d\phi(X_e)\in H_e$を平行移動させてできるベクトル場である。まず、$X,\phi_*X$が$\phi$-relatedであることを見る。$x\in G$に対して$d\phi(X_x)\overset{?}{=}(\phi_*X)_{\phi(x)}$を見ればよいが、$L_{\phi(x)}\circ\phi=\phi\circ L_x$より
+    \[(\phi_*X)_{\phi(x)}:=dL_{\phi(x)}d\phi(X_e)=d\phi dL_xX_e=d\phi X_x\]
+    となってOK。\\
+    補題\ref{lem:121}より、$[X,Y],[\phi_*X,\phi_*Y]$が$\phi$-relatedである。ある左不変ベクトル場と$\phi$-relatedな左不変ベクトル場は一意的（原点での値だけで決まる！）だから、$\phi_*$が括弧と交換する。
+\end{proof}
+
+
+\begin{thm}[部分群と部分環の対応]\label{thm:311}
+    連結Lie群$G$を固定する。次の対応は互いに逆。
+    \[\begin{array}{ccc}
+        \set{\iota:H\hookrightarrow G}{\text{連結部分Lie群}} & \longleftrightarrow & \set{\h\subset\g}{\text{部分Lie環}}\\
+        H & \longmapsto & \iota_*(\h)\\
+        \text{積分多様体} & \longmapsfrom & \h
+    \end{array}\]
+\end{thm}
+\begin{proof}
+    まず、$\iota_*$がLie環の準同型だからその像$\iota_*(\h)$は部分Lie環である。$\h\subset\g$に対し
+    \[D_x:=\set{X_x}{X\in\h}\]
+    で定まる左不変な分布が包合的であることは、注意\ref{rem:121}より$\h$が括弧積で閉じていることから従う。故に$e\in G$を含むその極大積分多様体$H$が取れるが、$H\subset G$が部分群であることと積分多様体としての微分構造について演算が全て滑らかになることを見る。\\
+    $dL_y(D_x)=D_{yx}$の意味で左不変だから、$L_y(H)$も同じ分布の極大積分多様体である。両辺$e$を含むから、$x\in H$に対し$L_{x^{-1}}H=H$となり、$H\subset G$は部分群。
+	故に、演算の制限$H\times H\to G$は$H$を経由するから、定理\ref{thm131}から$H$自身Lie群になる。
+	\[\begin{tikzcd}
+	    H\times H\arrow[rd,"\exists!"']\arrow[r]& G\\
+	    & H\arrow[u,hook]
+	\end{tikzcd}\]
+	$\mapsfromup=\id$は作り方からOK。$H\subset G$に対し、$\mapstodown$をしてできる極大積分多様体$H'$との一致を見る。$H\hookrightarrow G$自体も同じ分布に対する積分多様体（原点でそう！）だから最大性から
+	\[\begin{tikzcd}
+	    H\arrow[rd,"\exists!"']\arrow[r]& G\\
+	    & H'\arrow[u,hook]
+	\end{tikzcd}\]
+	であるが、$\phi:H\to H'$は同じ次元の多様体間の単射はめ込みであり、$\phi(H)\subset H'$は開部分群である。$H'$の連結性から$\phi(H)=H'$であり、つまり$\phi$はLie群の同型。
+\end{proof}
+
+この定理を準同型のグラフに用いることで次のような命題を得る。
+\begin{prop}\label{prop:311}
+    連結Lie群$G,H$とそのLie環の準同型$\Phi:\g\to\h$が与えられたとする。$G$が単連結ならLie群の準同型$\phi:G\to H$で$\phi_*=\Phi$となるものが存在し、一意。
+\end{prop}
+\begin{proof}
+    $G\times H$というLie群に対応するLie環は$\g\times\h$であり、$\Phi$のグラフは$\g\times\h$の部分Lie環である。故に前定理から$G\times H$の部分Lie群$G'$であって
+    \[\forall(x,y)\in G'\ \ \ G'_{(x,y)}=\set{(X,\Phi(X))}{X\in\g}\subset G_x\times H_y\]
+    となるものが存在する。$G$成分への射影の制限$p:G'\hookrightarrow G\times H\twoheadrightarrow G$ がLie群の同型であることがもし言えたなら、$\phi:G\overset{p^{-1}}{\longrightarrow}G'\hookrightarrow G\times H\twoheadrightarrow H$はLie群の準同型であり$\phi_*=\Phi$を満たす。\\
+    $dp:G_e\to G'_e$は$dp(v)=(v,\Phi(v))$だから線形同型であり、準同型性から各点で微分が線形同型なので$p:G'\to G$は局所微分同相となる。開写像性から$p(G')\subset G$が開部分群（つまり開かつ閉）となり、$G$の連結性から$p$は全射。また、$\Gamma:=\ker p$は単位元での局所微分同相性から、単位元の開近傍$U\subset G'$であって
+    \[\forall s\neq t\in\Gamma\ \ \ sU\cap tU=\emptyset\]
+    となるものが取れ、$p(U)$の平行移動がevenly coveredな$G$の開被覆を与えるから$p$は被覆。単連結性から$p$は全単射となる。局所微分同相性と準同型性と合わせれば、$p$がLie群の同型になることが分かる。\\
+    一意性は、$\psi_*=\Phi$となる準同型$\psi:G\to H$のグラフが$G\times H$の部分Lie群であって、対応する$\g\times\h$の部分Lie群が$\Phi$のグラフであることから従う。
+\end{proof}
+
+\begin{prop}
+    連結Lie群$G$の被覆空間$p:\Tilde{G}\to G$には$p$が局所微分同相かつ群準同型となるようなLie群の構造が入る。特に、$G$の普遍被覆は単連結Lie群となる。
+\end{prop}
+\begin{proof}
+    $p$が微分同相となるような$\Tilde{G}$上の$C^\infty$級構造は一意で、$G$内のevenly coveredな局所座標を持ち上げたもの全体が$\Tilde{G}$のアトラスとなる。$\Tilde{e}\in p^{-1}(e)$を一つ選ぶと、それに応じて$p$が群準同型となるように$\Tilde{G}$にLie群の構造が入って一意的であることを確認する。
+    \begin{fact}[lifting property（強）]
+        基点付き空間$(X,x_0),(\Tilde{X},\Tilde{x}_0),(Y,y_0)$とその間に基点を保つ連続写像$f:(Y,y_0)\to(X,x_0),p:(\Tilde{X},\Tilde{x}_0)\to(X,x_0)$が与えられたとする。$p$が被覆で$f$が
+        \[f_*(\pi_1(Y,y_0))\subset p_*(\pi_1(\Tilde{X},\Tilde{x}_0))\]
+        を満たすなら、連続写像$\Tilde{f}:(Y,y_0)\to(\Tilde{X},\Tilde{x}_0)$であって$p\circ\Tilde{f}=f$なるものが存在し一意。
+        \[\begin{tikzcd}
+            & (\Tilde{X},\Tilde{x}_0)\arrow[d,"p"]\\
+            (Y,y_0)\arrow[ru,"\Tilde{f}"]\arrow[r,"f"] & (X,x_0)
+        \end{tikzcd}\]
+    \end{fact}
+    \[F:(G\times G,(e,e))\ni (x,y)\longmapsto x^{-1}y\in (G,e)\]
+    と置き、$f:=F\circ(p\times p)\ :(\Tilde{G}\times\Tilde{G},(\Tilde{e},\Tilde{e}))\to(G,e)$ について考える。
+    \begin{fact}[位相群の基本群は可換]
+        $[c],[d]\in\pi_1(G,e)$の積として、各点毎で$G$の演算を行なったもの$[c\times d]$とループの結合$[c\dot d]$がある
+        \[(c\times d)(t):=c(t)d(t),\ \ \ (c\dot d)(t):=\begin{cases}
+            t\leq\frac12 & c(2t)\\
+            t\geq\frac12 & d(2t-1)
+        \end{cases}\]
+        が、これらはホモトピックである。
+    \end{fact}
+    から、$F_*([c],[d])=[c^{-1}\times d]=[c]^{-1}[d]$は基本群のレベルでも$F_*(\alpha,\beta)=\alpha^{-1}\beta$という準同型になる。\\
+    故に$p_*\pi_1(\Tilde{G},\Tilde{e})\subset\pi_1(G,e)$が部分群であることから、lifting propertyの仮定が満たされる。
+    \[\begin{tikzcd}
+        \Tilde{G}\times\Tilde{G}\arrow[r,"\Tilde{f}"]\arrow[d,"p\times p"'] &\Tilde{G}\arrow[d,"p"]\\
+        G\times G\arrow[r,"f"] & G
+    \end{tikzcd}\]
+    群の公理は$f:G\times G\ni(x,y)\mapsto x^{-1}y\in G$と$e\in G$の言葉だけで書けるが、lifting propertyの一意性から、$G$での群の公理が$\Tilde{G}$上でも成立することが分かる。また、$\Tilde{f}$には連続性しかないが、$p$は局所微分同相なので$\Tilde{f}$は$C^\infty$級。即ち$\Tilde{G}$はLie群となる。
+\end{proof}
+以上をまとめると、次になる。
+\begin{thm}[単連結Lie群とLie環の対応]
+    \[G\longmapsto\g,\ \ \ \hom(G,H)\ni\phi\longmapsto\phi_*\in\hom(\g,\h)\]
+    は単連結Lie群のなす圏とLie環のなす圏の圏同値を与える。
+\end{thm}
+\begin{proof}
+    忠実充満性、即ち$\hom(G,H)\ni\phi\mapsto\phi_*\in\hom(\g,\h)$の全単射性は命題\ref{prop:311}で既に示した。本質的全射性は次の代数的な事実から分かる。
+    \begin{fact}[Adoの定理]
+        全てのLie環は行列環のなすLie環の部分Lie環として実現できる。\\
+        参照：\url{https://terrytao.wordpress.com/2011/05/10/ados-theorem/}
+    \end{fact}
+    部分Lie群と部分Lie環の対応から、Lie環$\g$に対応するLie群$G$は$\mathrm{GL}(n,\R)$の部分群として構成できる。更にその普遍被覆$\Tilde{G}$を取れば、$\Tilde{G}$のLie環と$\g$は同型である。なぜなら、左不変ベクトル場が自然に持ち上がり、局所微分同相性より括弧積が保たれるから。
+\end{proof}
+\begin{prop}
+    普遍被覆を取る関手$G\longmapsto\Tilde{G}$は忠実かつ本質的全射。つまり、
+    Lie群の準同型$\phi:G\to H$は一意的に普遍被覆に持ち上がる。より詳しく言えば、次の準同型$\Tilde{\phi}$は存在し一意：
+    \[\begin{tikzcd}
+        \Tilde{G}\arrow[r,"\Tilde{\phi}"]\arrow[d,"p"'] &\Tilde{H}\arrow[d,"p"]\\
+        G\arrow[r,"\phi"] & H
+    \end{tikzcd}\]
+\end{prop}
+\begin{proof}
+    本質的全射は単連結な部分圏に制限して$\id$だから明らか。関手性は一意性から出てくるので、$\Tilde{\phi}$の一意性を言えばいいが、lifting propertyから直ちに出る。
+\end{proof}
+例えば、Lie環が同型であることと同型な普遍被覆を持つことが同値だったり、$\hom(G,H)\ni\phi\longmapsto\phi_*\in\hom(\g,\h)$が一般に単射\footnotetext{Lie環の準同型が全てLie群の準同型に持ち上がるわけではないが、少なくとも局所的には準同型になるため、そういったものを局所準同型と呼ぶことがある。}であることが分かる。Lie群は「そのLie環と基本群」の情報だけで同型類を記述することができ、こういうノリがLie群Lie環対応である。\\
+\ \\
+Lieの第三定理（Lie群Lie環対応の本質的全射性）をAdoの定理を経由せずに示す方法を知ったので追記。
+\begin{thm}[Lieの第三定理]
+    任意のLie環$\g$はある（単連結）Lie群$G$のLie環と同型になる。
+\end{thm}
+\begin{proof}
+    $\g$の中心を$C$、$\g/C$を$\Tilde{\g}$と書く。$\Tilde{\g}$は随伴表現により$End(\g)$に埋め込むことができるが、$End(\g)$はあるLie群のLie環であることが既に分かっているから、$\Tilde{\g}$は単連結Lie群$\Tilde{G}$のLie環として実現できる。\\
+    次の事実だけ認める。
+    \begin{fact}
+        Lie群の2次ホモトピー群は常に0。
+    \end{fact}
+    Hurewiczの定理から$\Tilde{G}$の2次以下のホモロジー群$H_1(G),H_2(G)=0$であり、普遍係数定理とde Rhamの定理から$\Tilde{G}$の2次以下の「$C$値de Rhamコホモロジー」も消える。
+    \[0\to C\to \g\to\Tilde{\g}\]
+    という拡大があるので、（線形空間のレベルでの）セクション$s:\Tilde{\g}\to\g$を取って
+    \[\Psi(X,Y):=[s(X),s(Y)]-s([X,Y])\ \ \ (X,Y\in\Tilde{\g})\]
+    という、$\Psi:\Tilde{\g}\times\Tilde{\g}\to C$が定まる。Lie環の公理から$\Psi$は反対称（$\Psi(Y,X)=-\Psi(X,Y)$）であり
+    \[\Psi([X,Y],Z)+\Psi([Z,X],Y)+\Psi([Y,Z],X)=0\]
+    となる\footnote{これが群の拡大のときの2-cocycle条件に相当する？}。$\Psi\in\hom(\wedge^2\Tilde{\g},C)=C\otimes\wedge^2\Tilde{\g}^*=C\otimes\wedge^2 T^*_e\Tilde{G}$ と同一視して、平行移動で動かすことで$\Psi$は$\Tilde{G}$上の$C$値2次微分形式だと思える。外微分の内在的な表記（長い式）から、$\Psi([X,Y],Z)$の巡回和が0という条件は$d\Psi=0$と同値である。先の事実から$\Psi=d\alpha$なる$\Tilde{G}$上の$C$値1次微分形式$\alpha$（左不変とは限らない）が存在する、完全1形式を引くことで$\alpha_e=0$としておく。\\
+    $\Psi$の左不変性から$(L_g)^*\alpha-\alpha$は閉形式であり、$L_g^*\alpha-\alpha=df_g$かつ$f_g(e)=0$なる$f_g:\Tilde{G}\to C$が存在する。この$f_g$というのは（$\Tilde{G}$の単連結性から）具体的に
+    \[f_g(h)=\int_e^h (L_g^*\alpha-\alpha)\]
+    と記述できるから、$F(g,h):=f_g(h)$は$F:\Tilde{G}\times\Tilde{G}\to C$という$C^\infty$級写像を定める。
+    \begin{align*}
+        L_{gh}^*\alpha-\alpha &= L_h^*(L_g^*\alpha-\alpha)+(L_h^*\alpha-\alpha)\\
+        df_{gh} &= L_h^*df_g+df_h\\
+        f_{gh} &= f_g\circ L_h + f_h +C\ \ \ \exists C=C_{g,h}\\
+        F(gh,k)+F(g,h) &= F(g,hk)+F(h,k)
+    \end{align*}
+    定数$C$の特定に$F(-,e)=0$を使った。これにより$F$は2-cocycle条件を満たすので、$G:=\Tilde{G}\times C$上に
+    \[(g,a)\times(h,b):=(gh,a+b+F(g,h))\]
+    で群構造が入り、$G$には直積として微分構造が入る。$F$がそうだから演算は全て$C^\infty$級となる。\\
+    残るは、元々のLie環$\g$と$G$のLie環の同型である。それは、セクション$s$による同一視$\g\cong\Tilde{\g}\times C$と$T_e G\cong T_e\Tilde{G}\times C$の合成によって得られることを確認する。まず、元のLie環の構造は$\Tilde{\g}\times C$に
+    \[[(X,A),(Y,B)]:=[s(X)+A,s(Y)+B]=s[X,Y]+\Psi(X,Y)=([X,Y],\Psi(X,Y))\]
+    で入る。また、$(X,A)\in T_e\Tilde{G}\times C$を平行移動したものは（積の定義から）
+    \[L_{(g,a)}(X,A)=(dL_gX,A+df_gX)\]
+    である。$G$上の左不変ベクトル場の第一成分は$\Tilde{G}$上の左不変ベクトル場であり、第二成分は$C$上の左不変ベクトル場に$\Tilde{G}$成分だけに依存するベクトル場を足したものとなる。$(X,A+df_g(X_e))\ \ X\in\g,A\in C$と書ける。特に、$G$上の左不変ベクトル場を$C$の方向に微分しても0である。
+    \begin{align*}
+        &[(X,A+df_g(X_e)),(Y,B+df_g(Y_e))]\\
+        =& [X,Y]+[X,B+df_g(Y_e)]+[A+df_g(X_e),Y]+[A+df_g(X_e),B+df_g(Y_e)]\\
+        =& [X,Y]+X(B+df_g(Y_e))-Y(A+df_g(X_e))\\
+        =& [X,Y]+X(L_g^*\alpha-\alpha)(Y_e)-Y(L_g^*\alpha-\alpha)(X_e)\\
+        =& [X,Y]+X(\alpha(Y)_g)-Y(\alpha(X)_g)\\
+        =& [X,Y]+X\alpha(Y)-Y\alpha(X)
+    \end{align*}
+    ここで、
+    \[\Psi(X,Y)=d\alpha(X,Y)=X\alpha(Y)-Y\alpha(X)-\alpha([X,Y])\]
+    より、最後の式は
+    \[[X,Y]+\Psi(X,Y)+\alpha([X,Y])=[X,Y]+\Psi(X,Y)+\alpha([X,Y])_g-\alpha([X,Y])_e=[X,Y]+\Psi(X,Y)+df_g([X,Y])\]
+    ただし、$\alpha_e=0$を使った。
+\end{proof}
+
+
+
+\newpage
+\subsection{指数写像}
+Lie群$G$に対し、$\R$は単連結Lie群だから命題\ref{prop:311}から次は全単射：
+\[\hom(\R,G)\ni\phi\longmapsto\phi_*\in\hom(\R,\g)\]
+故に、$X\in\g$に対し$d\phi_X(\pdiff{}{t})=X$なる準同型$\phi_X:\R\to G$が一意的に存在する。一意性から$\phi_X(st)=\phi_{sX}(t)$が成り立つため、この同型を調べるためには次を見れば十分である：
+\begin{defi}[指数写像]
+    $X\in\g$に対し、$\exp(X)\in G$を$\exp(X):=\phi_X(1)$と定める。
+\end{defi}
+つまり、$\phi_X(t)=\exp(tX)$となっている。
+\begin{thm}
+    \begin{enumerate}[(1)]
+        \item $\exp(tX)\exp(sX)=\exp((s+t)X),\ \exp(-X)=\exp(X)^{-1}$
+        \item $\phi_X$は$X$の積分曲線
+        \item $X\in\g$の時間発展$\Phi_X^t:G\to G$は$\Phi_X^t(x)=x\exp(tX)$
+        \item $\exp:\g\to G$は$C^\infty$級であり、$d\exp:\g_0\to G_e$は$\id_{\g}$
+    \end{enumerate}
+\end{thm}
+特に、左不変ベクトル場は自動的に完備（時間有限で爆発しない）である。
+\begin{proof}
+    (1)は$\phi_X(t)=\exp(tX)$から明らか。(2)は次から分かる。
+    \[(d\phi_X)_t(\pdiff{}{t})=dL_{\phi_X(t)}(d\phi_X)_e(\pdiff{}{t})=dL_{\phi_X(t)}(X_e)=X_{\phi_X(t)}\]
+    更に、$X$の左不変性から、積分曲線を左平行移動したものも積分曲線となって(3)が分かる。\\
+    (4)は$\g_0$の曲線の同値類の代表元として$t\mapsto tX$を選べば、次のように計算できる。
+    \[(d\exp)_0(X)=\pdiff{}{t}\lvert_{t=0}\exp(tX)=X_e\]
+\end{proof}
+\begin{thm}（捕鯨）
+    Lie群の準同型$\phi:G\to H$に対し次は可換（特に、群の$\exp$は部分群の$\exp$と一致）：
+    \[\begin{tikzcd}
+        G\arrow[r,"\phi"] & H\\
+        \g\arrow[u,"\exp"]\arrow[r,"\phi_*"] &\h\arrow[u,"\exp"']
+    \end{tikzcd}\]
+\end{thm}
+\begin{proof}
+    \[\pdiff{}{t}\lvert_{t=0}\phi\circ\phi_X(t)=d\phi(X_e)=\phi_*(X)_e\]
+    より、一意性から$\phi\circ\phi_X=\phi_{\phi_*X}$となる。
+\end{proof}
+\begin{prop}
+    部分Lie群$H\leq G$と$X\in\g$に対し
+    \[\exp({}^\forall tX)\in H\iff X\in\h\]
+\end{prop}
+\begin{proof}
+    先の可換性を$\iota:H\hookrightarrow G$に使えば、$(\Leftarrow)$が出る。逆は、捕鯨より$\phi_X$は$H$を経由するから
+    \[\begin{tikzcd}
+        \R\arrow[r,"\phi_X"]\arrow[rd,"\exists\psi"'] & G\\
+        & H\arrow[u,hook]
+    \end{tikzcd}\]
+    \[X=\left.\pdiff{}{t}\right\lvert_{t=0}\phi_X(t)=d\iota d\psi\left(\pdiff{}{t}\right)\in \im (d\iota)=\h\]
+\end{proof}
+\begin{eg}[$GL(n,\R)$の場合]
+    $G=GL(n,\R)$の場合$\g=M(n,\R)$だが、指数写像$\exp$と行列の指数関数は一致する。これは行列の指数関数が積分曲線になっていることを級数の項別微分で確かめれば良い。
+\end{eg}
+
+
+\ \\
+\subsection{連続準同型}
+\begin{lem}
+    連続群準同型$\phi:\R\to G$は自動的に$C^\infty$級。
+\end{lem}
+\begin{proof}
+    \[\exp:\g\supset U\xrightarrow{\cong}\exp(U)\subset G\]
+    が同相となる$0$の開近傍$U$を取る。十分小さい$t$で $\phi(t)=\exp({}^{\exists !} X(t))$ と$X(t)$を定めると、更に小さいところで
+    \[\forall n\ \forall\epsilon\ \ -\epsilon<t\epsilon\Rightarrow X(nt)=nX(t)\]
+    $X:=\lim_{N\to\infty}2^NX(2^{-N})$は十分大きい$N$で一定だから極限が存在する。$p\in\Q$に対し十分小さい$t$で$X(pt)=pX(t)$となるから
+    \[\phi(p)=\phi(2^{-N}p)^{2^N}=\exp(2^NX(2^{-N}p))=\exp(pX)\]
+    $\phi$の連続性から$\phi(t)=\exp(tX)\ (t\in\R)$である。
+\end{proof}
+\begin{lem}（捕鯨）
+    積$m:G\times G\to G$の微分$dm:T_eG\times T_eG\to T_eG$は$(v,w)\mapsto v+w$である。
+\end{lem}
+\begin{proof}
+    全微分を計算するためには偏微分を計算すればよく、それは$m(x,e)$を調べ$x$に関し微分するという手続きである。$m(x,e)=x$だから明らか。
+\end{proof}
+\begin{thm}
+    連続群準同型$\phi:G\to H$は自動的に$C^\infty$級。
+\end{thm}
+LieGrpからTopGrpへの忘却関手が忠実充満であることを意味している。
+\begin{proof}
+    $X\in\g$に対し$\R\ni t\mapsto\phi(\exp(tX))\in H$は連続群準同型、従って滑らかである。$\g$の基底$X_1,\dots,X_n$に対し
+    \[\begin{tikzcd}
+        \R^n\ni(t_1,\dots,t_n)\arrow[r]\arrow[dr] &\exp(t_1X_1)\dots\exp(t_nX_n)\in G\arrow[d,"\phi"]\\
+        &\prod_{i=1}^n\phi(\exp(t_iX_i))\in H
+    \end{tikzcd}\]
+    $\R^n\to H$が$C^\infty$級であり、逆関数定理から$\R^n\to G$が局所微分同相（捕鯨）だから$\phi$は単位元近傍で$C^\infty$級。平行移動をすれば$G$全域で$C^\infty$級。
+\end{proof}
+\begin{cor}
+    位相群をLie群化する微分構造は高々一意。
+\end{cor}
+\begin{proof}
+    極大アトラス$\A_1,\A_2$に対し、$\id:(G,\A_1)\to(G,\A_2)$とその逆は連続群準同型だから。
+\end{proof}
+ではLie群化可能な位相群はどういったクラスか？と言うと、実は局所Euclidな位相群に対しては必ずLie群化する微分構造が存在する。つまり、TopGrpのうち局所Euclidな位相群のなす部分圏へのLieGrpからの忘却関手は圏同値を与える。これがHilbertの第五問題である。\\
+これは、位相多様体の圏での群対象と微分多様体での群対象が一致するという話だが、実は実解析多様体での群対象とも一致するらしい。
+
+
+\ \\
+\subsection{閉部分群}
+\begin{thm}[部分群の多様体構造は一意]
+	$A\subset G$を部分群とする。$A$を部分多様体とする多様体構造は（存在すれば）一意であり、自動的に$A$はLie群になる。つまり、部分Lie群と「部分多様体化可能な部分群」は同等。
+\end{thm}
+示すべきことは大体、局所的には$\R^k$と可算集合の直積になること。
+\begin{proof}
+	$A$の部分多様体としての構造を固定する。もし、$A$がある左不変\footnote{左不変である必要性はないが、これだと$C^\infty$級性が自動的になる。例えば、$A$上の分布として$A$の接空間を考えたものは必ずしも$G$上に$C^\infty$級に拡張できるとは限らない。} 分布の積分多様体になっていたとする。
+	定理\ref{thm131}から諸々の写像の$C^\infty$級性が自動的になるため$A$は部分Lie群になり、命題\ref{prop:111}と同じ理由により部分多様体としての構造が一意的であることが従う。つまり、$x\in A$に対し$A_x=dL_x(A_e)$であることを見れば主張が示される。\\
+	$B_x$を「$x\in A$を通る$A$内の$C^\infty$曲線の同値類」とする。ここで曲線の$C^\infty$級性は$G$のそれで考える。
+	\[B_x:=\left\{\diff{c}{t}\in G_x\ \middle|\ c(0)=x,\ c({}^\forall t)\in A\right\}\footnote{例えば、８の字型だと$x=O$で十字型をしている。}\]
+	$A$内での$C^\infty$級性は$G$でのそれを導くので、$A_x\cup dL_x(A_e)\subset B_x$となる。$k:=\dim A$として$\dim\spn B_x=k$を示せばいいので、線形独立な$\diff{c_1}{t},\dots,\diff{c_{k+1}}{t}\in B_x$が存在したと仮定して矛盾を導く。
+	\[\phi:(-\epsilon,\epsilon)^{k+1}\ni(t_1,\dots,t_{k+1})\longmapsto x^{-k-1}c_1(t_1)\dots c_{k+1}(t_{k+1})\in G\]
+	という写像は像が$A$に含まれる（$A$は部分群！）ような埋め込みである。$A$の第二可算性に由来する議論から矛盾が生える。つまり、$A$から$\R^{k+1}$への$C^\infty$級な全射が生えるが、低い次元からの像は測度零である。
+\end{proof}
+
+\begin{thm}
+	部分Lie群$H\subset G$が埋め込み$\iff\ H\subset G$が閉。
+\end{thm}
+\begin{proof}
+	部分Lie群は然るべき分布に対する極大積分多様体になる（定理\ref{thm:311}）からより、$G$の各点に対し高々可算集合$D\subset\R^{n-k}$が存在し、$H\subset G$は局所的には$\R^k\times D\subset\R^n$と微分同相。$H\subset G$が埋め込みであることも閉であることも局所的な性質：\\
+$G$の開被覆$\{U_\lambda\}$に対し、$H\subset G$が性質(P)を持つ$\iff H\cap U_\lambda\subset U_\lambda$が$\forall\lambda$で性質(P)を持つ
+	\begin{fact}[Cantor集合]
+		高々可算集合$D\subset\R^{n-k}$が閉であれば孤立点を持つ。
+	\end{fact}
+	平行移動から言える「$D$が離散的$\iff D$が孤立点を持つ」と上の事実から、$H\subset G$が局所的に閉であること局所的に埋め込みであることと各点での$D$の離散性は全て同値。
+\end{proof}
+
+\begin{thm}
+    $A\subset G$が閉部分群なら（埋め込まれた）部分Lie群になる。
+\end{thm}
+\begin{proof}
+    示すべきことは$A$が（埋め込まれた）部分多様体であることだけである。$\exp:U\to\exp(U)$が微分同相となる開近傍$U\subset\g$と部分空間$\a\subset\g$であって$\exp(U\cap\a)=\exp(U)\cap A$なるものが取れれば、$A$の平行移動により各点で埋め込みであることが言え、証明が完了する。
+    \[\a:=\set{X\in\g}{\forall t\in\R\ \ \exp(tX)\in A}\]
+    が$\g$の部分空間であることをまず見る、スカラー倍については良いから和について閉じることを言う。\\
+    $\g\times\g\ni(X,Y)\mapsto\exp^{-1}(\exp X\exp Y)$ はTaylorの定理（捕鯨）から$X+Y+O(\norm{X}^2+\norm{Y}^2)$ だから
+    \[\left(\exp\left(\frac{tX}{n}\right)\exp\left(\frac{tY}{n}\right)\right)^n=\exp\left(n\times\left(\frac{tX}{n}+\frac{tY}{n}+O\left(\frac1{n^2}\right)\right)\right)\to\exp(tX+tY)\]
+    $\exp(t(X+Y))$に収束する$A$内の点列が存在するから、閉性から$\exp(t(X+Y))\in A$。\\
+    また、捕鯨から $\a\times\a^\perp\ni(X,Y)\mapsto\exp X\exp Y\in G$は局所微分同相である（$\a^\perp$は$\a\subset\g$の補空間）。故に $\exp(U\cap\a)\supset\exp(U)\cap A$ （逆の包含は自動的）となる$U$を見つけるためには、$\exp({}^\exists U\cap\a^\perp)\cap A=\{e\}$ となればいい。何故なら、$\exp(U)\cap A$の元を$\exp\a\times\exp\a^\perp$の形に表せば、$\exp\a^\perp$のパートが$A$に入ることになるから。\\
+    そのような$U$が無いと仮定すれば、$\exp(X_n)\in A$なる$\a^\perp$内の点列で0に収束する$\{X_n\}$が存在することになる。$X_n$をその部分列に取りかえることで、$\{\frac{X_n}{\norm{X_n}}\}$がある$X\in\a^\perp$に収束している（$\a^\perp$の単位球面の点列コンパクト性）として良い。$N_n:=\lfloor t\norm{X_n}^{-1}\rfloor$ と置くと、$\exp(N_nX_n)\in A$である一方それは$\exp(tX)$に収束する。故に$\exp({}^\forall tX)\in A$となり、$X\in\a\cap\a^\perp$である。$X$の構成から$\norm{X}=1$だからこれは矛盾。
+\end{proof}
+
+
+\ \\
+\subsection{群の共役作用 vs 環の括弧積}
+Lie群の作用と言えば、$C^\infty$級な$G\times M\to M$ものをだけを指す。
+\begin{thm}
+    $p\in M$が作用$G\times M\to M$の固定点ならば、次の写像は$G$の表現：
+    \[\begin{array}{cccc}
+        \Psi: & G & \longrightarrow & Aut(T_pM) \\
+         & \mapin & & \mapin\\
+         & g & \longmapsto & dg_p:T_pM\to T_pM
+    \end{array}\]
+\end{thm}
+\begin{proof}
+    $\Psi$の群準同型性はOK（写像の微分を取る操作は関手的）だから$C^\infty$級性を見る。$v=\pdiff{}{x_j}\in T_pM,\ f\in C^\infty(M)$ に対し
+    \[dg_p(v)f=\pdiff{}{x_j}f(g\times x)\]
+    $f(g\times x)$は$g,x$に関し滑らかだから、その偏微分もそう。$f$として$x_i$という座標関数を取れば、$dg_p(v)f$の$C^\infty$級性とは$\Psi(g)$の第$(i,j)$成分の$g$に関する$C^\infty$級性である。故に$\Psi$は滑らか。
+\end{proof}
+\begin{defi}
+    共役作用 $x^g:=gxg^{-1}$ は単位元$e$を固定点に持つ、故に
+    \[Ad:\ G\ni g\longmapsto (v\mapsto gvg^{-1}\footnotemark )\in Aut(\g)\]
+    という表現が得られる、これを随伴表現と呼ぶ。また、その微分はLie環の表現となる。
+    \[ad:\ \g\longrightarrow End(\g)\]
+\end{defi}
+\footnotetext{積$G\times G\to G$の微分により$TG\times TG\to TG$という積が誘導される。$G\subset TG$に制限したものが接ベクトルの左（右）平行移動になることが確かめられる。その意味でこう書いている。}
+\begin{prop}
+    \[ad(X)Y=[X,Y]\]
+\end{prop}
+$G=GL(n,\R)$の場合の主張は指数写像を使った具体的な計算で確かめられる、形式的な操作で困ったら行列群の場合に考えてみると良い。
+\begin{proof}
+    \[Ad(\exp(tX))Y=\exp(tX)Y\exp(-tX)=Y\exp(-tX)=(r_{\exp(tX)}^{-1})_*Y\]
+    が$Y$の左不変性から従う。両辺$\diff{}{t}\lvert_{t=0}$をすると、最左辺は（$\exp(tX)$が$X_e$を代表する曲線だから）$ad(X)Y$であり、最右辺は捕鯨から$L_X Y=[X,Y]$である。
+\end{proof}
+
+\begin{thm}[正規部分群とイデアル]
+    $G$を連結とする。連結部分Lie群と部分Lie環の対応において、連結正規部分群とイデアルが対応する。
+\end{thm}
+\begin{proof}
+    $I\subset\g$がイデアルとは、$[X,I]\subset I\ \ \forall X\in\g$となることである。先の定理から、これは
+    \begin{align*}
+        &\iff\diff{}{t}\lvert_{t=0}\exp(tX)I\exp(-tX)\subset I\ \ \forall X\in\g\\
+        &\iff\exp(X)I\exp(-X)\subset I\ \ \forall X\in\g\\
+        &\iff gIg^{-1}\subset I\ \ \forall g\in G
+    \end{align*}
+    と同値である、$\exp(X)$と書ける元全体は$G$の単位元の近傍なので、連結性から全ての$G$の元は$\exp(X)$の形の元の幾つかの積であることに注意。\\
+    部分Lie環$I\subset\g$が共役不変であることはその分布が共役不変であることと同値だから、その積分多様体が共役不変であることと同値。
+\end{proof}
+\begin{thm}[中心と中心]
+    $G$を連結とする。$G$の中心の連結成分と$\g$の中心が対応する。
+\end{thm}
+\begin{proof}
+    $\g$の中心は$Z(\g):=\set{X\in\g}{\forall Y\in\g\ [X,Y]=0}$である。$X\in\g$に対し
+    \begin{align*}
+        & [X,Y]=0\ \ \forall Y\in\g\\
+        \iff & \exp(Y)X\exp(-Y)=X\ \ \forall Y\in\g\\
+        \iff & gXg^{-1}=X\ \ \forall g\in G
+    \end{align*}
+    と、前定理の証明と同様にして分かる。連結部分Lie群と部分Lie環の対応は指数写像でも記述できる：
+    \[H=\bigcup_{n=0}^\infty \exp(\h)^n\]
+    から、$\exp(gXg^{-1})=g\exp(X)g^{-1}$ と合わせて主張を得る。
+\end{proof}
+\begin{lem}[可換]
+    連結Lie群$G$が可換であることとLie環$\g$が可換であることと$G\cong\R^k\times\T^l$は同値。
+\end{lem}
+\begin{proof}
+    可換Lie群$G$の共役作用は自明である。故に随伴表現$Ad$は自明な表現であり、更にその微分である$ad$も零写像である。これは$\g$が可換であることを示している。\\
+    可換Lie環$\g$は定義から構造が次元$n$だけで定まり、更に$\R^n$のLie環はその形をしている。単連結Lie群とLie環の対応から、$G$の普遍被覆は$\R^n$であり、被覆写像$\R^n\to G$の商は離散部分群である。適切に$GL(n,\R)$で動かせば$Z^l\times\{0\}\subset\R^n$という形になり、そこから$G\cong\R^{n-l}\times\T^l$が従う。\\
+    $\R^k\times\T^l$は可換である。
+\end{proof}
+\begin{thm}
+    \[[X,Y]=0\Rightarrow \exp(X)\exp(Y)=\exp(X+Y)\]
+\end{thm}
+\begin{proof}
+    $\spn{X,Y}\subset\g$が可換だから、対応する連結部分Lie群$H\subset G$が可換になる。
+    \[\exp(X+Y)=\lim_{n\to\infty}\left(\exp\left(\frac{X}{n}\right)\exp\left(\frac{Y}{n}\right)\right)^n=\exp(X)\exp(Y)\]
+\end{proof}
+\begin{thm}
+    有限次元線形空間$V$と双線形写像${,}:V\times V\to V$に対し
+    \[A:=\set{\alpha\in Aut(V)}{\alpha{v,w}={\alpha v,\alpha w}},\ \a:=\set{a\in End(V)}{a{v,w}={av,w}+{v,aw}}\]
+    $A$のLie環は$\a$である。
+\end{thm}
+\begin{proof}
+    閉な条件式だから、$A$は$Aut(V)$の部分Lie群になることに注意。次を示せば十分：
+    \[\exp(ta){v,w}={\exp(ta)v,\exp(ta)w}\iff a{v,w}={av,w}+{v,aw}\]
+    $\Rightarrow$はLiebniz則に気を付ければよく、$\Leftarrow$は冪級数で計算したらすぐ出てくる。\\
+    または、${,}:V\times V\to V$を$\Psi:V\otimes V\to V$と思えば$a\circ\Psi=\Psi\circ(a\otimes1+1\otimes a)$となって、
+    \[\exp(ta)\circ\Psi=\Psi\circ\exp(a\otimes1+1\otimes a)=\Psi\circ(\exp(a)\otimes1)\circ(1\otimes\exp(a))=\Psi\circ(\exp(a)\otimes\exp(a))\]
+\end{proof}
+同様の議論で、あるテンソル$T\in V^{\otimes n}\otimes (V^*)^{\otimes m}$を保つLie群とLie環が対応する。例えば、双線形形式$(,):V\times V\to K$について
+\[A:=\set{\alpha\in Aut(V)}{{v,w}={\alpha v,\alpha w}},\ \a:=\set{a\in End(V)}{0={av,w}+{v,aw}}\]
+がLie群とLie環対応で対応する。
+\begin{cor}
+    連結Lie群$G$の自己同型群は再びLie群
+\end{cor}
+\begin{proof}
+    普遍被覆$\Tilde{G}$に対し、単連結Lie群とLie環の対応から$\Tilde{G}$の自己同型と$\g$の自己同型が一対一に対応する。実は位相まで含めて$\Tilde{G}$の自己同型群\footnotemark と$\g$の自己同型群は同型である。先の定理から$\g$の自己同型群はLie群になっている。\\
+    被覆空間論の話を思い出せば、$\Tilde{G}$の自己同型であって$\ker(\Tilde{G}\to G)$を保つもの全体である。それは閉な条件だから、$G$の自己同型群もLie群になる。
+\end{proof}
+\footnotetext{局所コンパクト空間がコンパクト開位相で位相群になることは局所連結性などが必要。詳しくは \url{https://yamyamtopo.wordpress.com/2017/01/19/コンパクト開位相をめぐって/}を参照}
+
+
+\newpage
+\subsection{等質多様体}
+\begin{thm}（捕鯨）
+    作用$G\times M\to M$がproperかつ自由であるとき、$M/G$上に多様体構造が存在し$\pi:M\to M/G$が$G$をfiberとするfiber bundleとなる（局所切断を持つと言っても良い）。    
+\end{thm}
+まず、作用がproperとは $G\times M\ni(g,x)\longmapsto (x,gx)\in M\times M$ がproper（コンパクト集合の逆像がコンパクト）であることを言う。properでないというのは「$g$が無限遠方に向かっていっても$gx$が$x$に何回も近づいてしまう」という状況である。自由性と合わせることで「$x,gx$の距離を使って$g,e$の距離を上から抑えることができる」と言っても同じことである。
+\begin{lem}
+    作用$G\times M\to M$がproperかつ自由なら、$x\in M$に対し次が成立。
+    \[e\in{}^\forall U\subset G,\text{開近傍}\ x\in{}^\exists V\subset M,\text{開近傍}\ \ \set{g\in G}{\exists y\in V\ gy\in V}\subset U\]
+\end{lem}
+\begin{proof}
+    $V$は相対コンパクトな開近傍を動くものとする。proper性から $\set{g\in G}{\exists y\in \overline{V}\ gy\in \overline{V}}$ がコンパクトになる。また、あらゆる$V$に関する交叉は$\{e\}$となる。
+    \[\bigcap_V \set{g\in G}{\exists y\in \overline{V}\ gy\in \overline{V}}\setminus U=\emptyset\]
+    より、コンパクト性からある有限交叉が空、有向性からある$V$で空。
+\end{proof}
+定理の証明に入る
+\begin{proof}[Proof of Thm.]
+    まず、各$x\in M$に対し$\Psi:G\ni g\longmapsto gx\in M$という写像がある。$X\in\g$を固定すると$d\Psi(X)\in T_x M$という接ベクトルが各$x\in M$で定まる。$Y_x:=d\Psi(X)$というベクトル場$Y$は$C^\infty$級である（作用$G\times M\to M$の$X$での偏導関数だから）。\\
+    $t\mapsto\exp(tX)x$という$M$内の曲線は$Y$の積分曲線であるから、もしある$x\in M,X\in\g\setminus\{0\}$で$Y_x=0$となれば（ODEの解の一意性から）$\forall t\ \exp(tX)x=x$となって作用の自由性に反する。つまり、$\Psi$の微分は各$x\in M$で単射であることが言えた。\\
+    $G$の次元を$n,$ $M$の次元を$m$とする。$x\in M$を通る曲面$S$であって$G$の軌道と横断的に交わるものを取る、つまり各$y\in S$で$T_y S+\im(d\Psi_y)=T_y M$となるものである。作用の制限$G\times S\to M$は先の補題から（$S$を十分$x$の近傍に制限すれば）単射であり、横断性から像への微分同相（更に像は開写像定理から開）である。$S\to M/G$は像（開集合）への同相だから、このような$S$を各$x\in M$で取ってきて、$M/G\supset GS/G\xrightarrow{\cong} S$を局所座標として微分構造を入れる。\\
+    座標変換の$C^\infty$級性を確かめる。$GS/G\xrightarrow{\cong} S$と$GS'/G\xrightarrow{\cong} S'$の座標変換とは
+    \[S\cap GS'\to (GS\cap GS')/G\to GS\cap S':\ x\longmapsto{}^{\exists!} gx\ \ \ (gx\in S')\]
+    という写像であるが、$GS'\cong G\times S'$ が微分同相だから、第二成分への射影の制限$S\cap GS'\to S'$は像への微分同相。特に$C^\infty$級である。\\
+    $GS=(\pi:M\to M/G)^{-1}(S)$は$S\times G$と微分同相だから、これにより局所自明化が与えられる。
+\end{proof}
+自然な$\pi:M\to M/G$が誘導する$d\pi:T_x M\to T_{\pi(x)}M/G$は全射であり、その核は$T_x(Gx)=T_x\pi^{-1}(\pi(x))\subset T_x M$である。何故なら$M$は局所的には$G\times M/G$だから。
+\begin{cor}
+    Lie群$G$とその閉部分群$H$に対し、$M:=G/H$は自然に多様体としての構造を持ち、掛け算$G\times M\to M$は$C^\infty$級。また、$H$が閉正規部分群であれば、$G/H$はLie群になる。
+\end{cor}
+\begin{proof}
+    作用$H\times G\to G$がproperかつ自由であることがすぐ分かる。故に、前定理から$M:=G/H$には自然に多様体構造が入る。掛け算$G\times M\to M$は、局所切断$G\times M\to G\times G$と掛け算$G\times G\to G$と射影$G\to M$の合成だから$C^\infty$級。\\
+    更に$H$が正規部分群である場合の$G/H$の演算の$C^\infty$級性だが、同様に局所切断と$G$の演算と射影の合成であるため、OK。
+\end{proof}
+\begin{prop}[等質空間]
+    このような作用$G\times M\to M$は推移的だが、逆に推移的な作用$G\times M\to M$は必ずこの形となる。
+\end{prop}
+\begin{proof}
+    $H$をある点$x\in M$のstabilizerとすればこれは$G$の閉部分群。orbit-stabilizer定理から次は全単射：
+    \[\Psi:G/H\ni gH\longmapsto gx\in M\]
+    局所切断$G/H\to G$と作用の制限$G\to M$の合成だから、$\Psi$は$C^\infty$級である。先の定理（捕鯨）の証明の前半と同様にして$\Psi$の微分が各点で単射であることが分かる。$X\in\g\setminus\h$を$G\ni g\mapsto gx\in M$で送ったものが0であるとして$\exp(tX)x=x$を導けば、$\exp(tX)\in H$より$X\in\h$となって矛盾する。\\
+    もし$G/H$の次元より$M$の次元の方が大きければ、像の測度が0になって全単射性に矛盾する。故に同じ次元であり、$\Psi$の微分は各点で全単射になる。つまり$\Psi$は（$G$からの作用を保つ）微分同相。
+\end{proof}
+\begin{prop}[準同型定理]
+    Lie群の準同型$\phi:G\to H$に対し、$G/\ker\phi,\im\phi$はLie群としての構造を持ち、同型となる。
+\end{prop}
+\begin{proof}
+    $\phi:G/\ker\phi\to H$という写像は$C^\infty$級（局所切断$G/H\to G$を取る）である。故に単射なLie群の準同型を与え、これによって$\im\phi$にLie群としての構造を入れれば、トートロジカルな理由で$G/\ker\phi$と$\im\phi$は同型。Lie群の部分群をLie群と思う方法は高々一意的（積分多様体と書ける）だから、これ以外に$\im\phi$をLie群化する多様体の構造はない。そう言うと多少は非自明さが出てくる？
+\end{proof}
